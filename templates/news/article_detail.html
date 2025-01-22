@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <article class="single-article">
+        <!-- Article Header -->
+        <header class="article-header mb-4">
+            <h1 class="article-title">{{ article.title }}</h1>
+            <div class="article-meta">
+                <span class="badge bg-primary">{{ article.category.name }}</span>
+                <span class="text-muted ms-3">
+                    <i class="fas fa-user"></i> {{ article.author.username }}
+                </span>
+                <span class="text-muted ms-3">
+                    <i class="fas fa-clock"></i> {{ article.created_at|date:"F d, Y" }}
+                </span>
+            </div>
+        </header>
+
+        <!-- Featured Image -->
+        <div class="article-image mb-4">
+            <img src="{{ article.image.url }}" class="img-fluid" alt="{{ article.title }}">
+            {% if article.image_caption %}
+                <figcaption class="text-muted mt-2">{{ article.image_caption }}</figcaption>
+            {% endif %}
+        </div>
+
+        <!-- Article Content -->
+        <div class="article-content mb-5">
+            {{ article.content|safe }}
+        </div>
+
+        <!-- Comments Section -->
+        <section class="comments-section">
+            <h3>Comments</h3>
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'add_comment' article.slug %}" class="mb-4">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <textarea name="content" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+                </form>
+            {% else %}
+                <p>Please <a href="{% url 'login' %}">login</a> to post comments.</p>
+            {% endif %}
+
+            <!-- Comments List -->
+            <div class="comments-list">
+                {% for comment in article.comments.all %}
+                    <div class="comment card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">{{ comment.user.username }}</h6>
+                            <p class="card-text">{{ comment.content }}</p>
+                            <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No comments yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </article>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Mestowot Media{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Featured Articles -->
+    <section class="featured-section mb-4">
+        <h2>Latest News</h2>
+        <div class="row">
+            {% for article in featured_articles %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+                    <div class="card-body">
+                        <span class="badge bg-primary">{{ article.category.name }}</span>
+                        <h5 class="card-title">{{ article.title }}</h5>
+                        <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+                        <small class="text-muted">
+                            {{ article.created_at|date:"F d, Y" }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Category Sections -->
+    <section class="category-sections">
+        {% for category in categories %}
+        <div class="category-section mb-4">
+            <h3>{{ category.name }}</h3>
+            <div class="row">
+                {% for article in category.article_set.all|slice:":3" %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.title }}</h5>
+                            <p class="card-text">{{ article.content|truncatewords:15 }}</p>
+                            <a href="{% url 'article_detail' article.slug %}" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}
