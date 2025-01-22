@@ -24,6 +24,9 @@ urlpatterns = [
     path('', include('news.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
-    path('radio/', include('radio.urls')),
-    path('epaper/', include('epaper.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('radio/', include('radio.urls', namespace='radio')),
+    path('epaper/', include('epaper.urls', namespace='epaper')),
+]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
