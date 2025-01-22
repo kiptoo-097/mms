@@ -1,0 +1,80 @@
+/* Color Variables */
+:root {
+    --primary-color: #1F4E6E;    /* Blue */
+    --secondary-color: #008080;   /* Teal */
+    --accent-color: #C69214;      /* Gold */
+    --highlight-color: #FFA500;   /* Orange */
+    --dark-color: #000000;        /* Black */
+    --light-color: #ffffff;
+    --gray-color: #f8f9fa;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-color);
+}
+
+/* Header and Navigation */
+.navbar {
+    background-color: var(--primary-color) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--light-color);
+    font-weight: 500;
+    padding: 0.8rem 1.2rem;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: var(--accent-color);
+}
+
+/* Buttons and Links */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-accent {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--light-color);
+}
+
+/* Cards and Content */
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Radio Player Styles */
+.radio-player {
+    background: var(--light-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.now-playing {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    padding: 1rem;
+    border-radius: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar-nav {
+        padding: 1rem 0;
+    }
+    .card {
+        margin-bottom: 1.5rem;
+    }
+}

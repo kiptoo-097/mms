@@ -8,14 +8,20 @@ class RadioPlayerView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         now = timezone.now()
+        
         context.update({
             'current_program': Program.objects.filter(
-                schedule__start_time__lte=now,
-                schedule__end_time__gte=now
+                schedule__day_of_week=now.weekday(),
+                schedule__start_time__lte=now.time(),
+                schedule__end_time__gte=now.time(),
+                schedule__is_active=True
             ).first(),
+            
             'daily_schedule': Schedule.objects.filter(
-                start_time__date=now.date()
+                day_of_week=now.weekday(),
+                is_active=True
             ).order_by('start_time'),
+            
             'radio_stream_url': 'https://stream.mestowotnews.com/live'
         })
         return context
@@ -31,6 +37,7 @@ class ScheduleView(ListView):
             'Monday', 'Tuesday', 'Wednesday', 
             'Thursday', 'Friday', 'Saturday', 'Sunday'
         ]
+        context['current_day'] = timezone.now().weekday()
         return context
 
     def get_queryset(self):

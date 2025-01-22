@@ -1,0 +1,44 @@
+[
+    {
+        "model": "radio.program",
+        "pk": 1,
+        "fields": {
+            "title": "Morning Glory",
+            "host": "John Doe",
+            "description": "Start your day with uplifting music and inspirational messages",
+            "is_active": true
+        }
+    },
+    {
+        "model": "radio.schedule",
+        "pk": 1,
+        "fields": {
+            "program": 1,
+            "day_of_week": 0,
+            "start_time": "06:00:00",
+            "end_time": "09:00:00",
+            "is_active": true
+        }
+    },
+    {
+        "model": "radio.program",
+        "pk": 2,
+        "fields": {
+            "title": "Afternoon Delight",
+            "host": "Jane Smith",
+            "description": "Your afternoon companion with great music and talk",
+            "is_active": true
+        }
+    },
+    {
+        "model": "radio.schedule",
+        "pk": 2,
+        "fields": {
+            "program": 2,
+            "day_of_week": 0,
+            "start_time": "14:00:00",
+            "end_time": "17:00:00",
+            "is_active": true
+        }
+    }
+]

@@ -1,3 +1,4 @@
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
@@ -28,9 +29,46 @@
                     <a class="nav-link {% if 'county' in request.path %}active{% endif %}" href="{% url 'news:category' 'county' %}">County</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="">Contact</a>
+                    <a class="nav-link" href="{% url 'radio:player' %}">Live Radio</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'epaper:list' %}">E-Paper</a>
+                </li>
+            </ul>
+            
+            <!-- Auth Links -->
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:signup' %}">Register</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
 </nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    const navCollapse = document.querySelector('.navbar-collapse');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (navCollapse.classList.contains('show')) {
+                navCollapse.classList.remove('show');
+            }
+        });
+    });
+});
+</script>

@@ -37,7 +37,7 @@
         <section class="comments-section">
             <h3>Comments</h3>
             {% if user.is_authenticated %}
-                <form method="post" action="{% url 'add_comment' article.slug %}" class="mb-4">
+                <form method="post" action="{% url 'news:add_comment' article.slug %}" class="mb-4">
                     {% csrf_token %}
                     <div class="form-group">
                         <textarea name="content" class="form-control" rows="3" required></textarea>

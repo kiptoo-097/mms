@@ -1,63 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}E-Papers - Mestowot Media{% endblock %}
+{% block title %}E-Papers{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <div class="row mb-4">
-        <div class="col">
-            <h2>Digital Newspapers</h2>
-            <p class="text-muted">Access our latest e-paper editions</p>
-        </div>
-    </div>
-
-    <div class="row g-4">
+    <h2 class="mb-4">E-Papers</h2>
+    <div class="row">
         {% for paper in papers %}
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <img src="{{ paper.cover_image.url }}" class="card-img-top" alt="{{ paper.title }}">
+        <div class="col-md-4 mb-4">
+            <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ paper.title }}</h5>
-                    <p class="text-muted mb-2">
-                        <i class="fas fa-calendar"></i> {{ paper.publication_date|date:"F d, Y" }}
-                    </p>
-                    <p class="card-text">{{ paper.description|truncatewords:20 }}</p>
-                    <a href="{% url 'epaper:view' paper.slug %}" class="btn btn-primary">
-                        <i class="fas fa-book-reader"></i> Read Now
-                    </a>
+                    <p class="card-text">Published: {{ paper.publication_date }}</p>
+                    <a href="{% url 'epaper:detail' paper.slug %}" class="btn btn-primary">Read</a>
+                    <a href="{% url 'epaper:download' paper.slug %}" class="btn btn-secondary">Download</a>
                 </div>
             </div>
         </div>
         {% empty %}
         <div class="col-12">
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle"></i> No e-papers available at the moment.
-            </div>
+            <p>No e-papers available.</p>
         </div>
         {% endfor %}
     </div>
-
-    {% if papers.has_other_pages %}
-    <nav class="mt-4">
-        <ul class="pagination justify-content-center">
-            {% if papers.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ papers.previous_page_number }}">Previous</a>
-            </li>
-            {% endif %}
-            {% for num in papers.paginator.page_range %}
-            <li class="page-item {% if papers.number == num %}active{% endif %}">
-                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-            </li>
-            {% endfor %}
-            {% if papers.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ papers.next_page_number }}">Next</a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-    {% endif %}
 </div>
 {% endblock %}

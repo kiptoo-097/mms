@@ -113,6 +113,10 @@ class LatestArticlesView(ListView):
         return Article.objects.filter(
             status='published'
         ).order_by('-created_at')
+        
+        
+from django.urls import reverse
+
 
 class AddCommentView(LoginRequiredMixin, CreateView):
     model = Comment
@@ -126,4 +130,4 @@ class AddCommentView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return self.object.article.get_absolute_url()
+        return reverse('news:article_detail', kwargs={'slug': self.object.article.slug})
