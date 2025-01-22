@@ -30,7 +30,7 @@
                                         <i class="fas fa-clock"></i> {{ article.created_at|date:"F d, Y" }}
                                     </small>
                                 </div>
-                                <a href="{% url 'article_detail' article.slug %}" class="btn btn-primary mt-2">Read More</a>
+                                <a href="{% url 'news:article_detail' article.slug %}" class="btn btn-primary mt-2">Read More</a>
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,6 @@ from . import views
 app_name = 'radio'
 
 urlpatterns = [
-    path('', views.player, name='player'),
-    path('schedule/', views.schedule, name='schedule'),
+    path('', views.RadioPlayerView.as_view(), name='player'),
+    path('schedule/', views.ScheduleView.as_view(), name='schedule'),
 ]

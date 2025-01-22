@@ -7,7 +7,7 @@
         </div>
         <div class="flex-grow-1 ms-3">
             <h6 class="mb-1">
-                <a href="{% url 'article_detail' article.slug %}" class="text-dark text-decoration-none">
+                <a href="{% url 'news:article_detail' article.slug %}" class="text-dark text-decoration-none">
                     {{ article.title }}
                 </a>
             </h6>
@@ -23,7 +23,7 @@
     <h4 class="widget-title">Recent News</h4>
     <div class="list-group">
         {% for article in recent_articles|slice:":5" %}
-        <a href="{% url 'article_detail' article.slug %}" class="list-group-item list-group-item-action">
+        <a href="{% url 'news:article_detail' article.slug %}" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
                 <h6 class="mb-1">{{ article.title }}</h6>
                 <small>{{ article.created_at|timesince }}</small>

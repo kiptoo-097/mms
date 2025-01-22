@@ -31,7 +31,7 @@
                                     </div>
                                     <h5 class="card-title mt-2">{{ article.title }}</h5>
                                     <p class="card-text">{{ article.content|truncatewords:30|safe }}</p>
-                                    <a href="{% url 'article_detail' article.slug %}" class="btn btn-primary btn-sm">Read More</a>
+                                    <a href="{% url 'news:article_detail' article.slug %}" class="btn btn-primary btn-sm">Read More</a>
                                 </div>
                             </div>
                         </div>

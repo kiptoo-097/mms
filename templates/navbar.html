@@ -7,28 +7,28 @@
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'news:home' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'church' in request.path %}active{% endif %}" href="{% url 'category' 'church' %}">Church</a>
+                    <a class="nav-link {% if 'church' in request.path %}active{% endif %}" href="{% url 'news:category' 'church' %}">Church</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'politics' in request.path %}active{% endif %}" href="{% url 'category' 'politics' %}">Politics</a>
+                    <a class="nav-link {% if 'politics' in request.path %}active{% endif %}" href="{% url 'news:category' 'politics' %}">Politics</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'kalenjin-news' in request.path %}active{% endif %}" href="{% url 'category' 'kalenjin-news' %}">Kalenjin News</a>
+                    <a class="nav-link {% if 'kalenjin-news' in request.path %}active{% endif %}" href="{% url 'news:category' 'kalenjin-news' %}">Kalenjin News</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'opinion' in request.path %}active{% endif %}" href="{% url 'category' 'opinion' %}">Opinion</a>
+                    <a class="nav-link {% if 'opinion' in request.path %}active{% endif %}" href="{% url 'news:category' 'opinion' %}">Opinion</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'national' in request.path %}active{% endif %}" href="{% url 'category' 'national' %}">National</a>
+                    <a class="nav-link {% if 'national' in request.path %}active{% endif %}" href="{% url 'news:category' 'national' %}">National</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'county' in request.path %}active{% endif %}" href="{% url 'category' 'county' %}">County</a>
+                    <a class="nav-link {% if 'county' in request.path %}active{% endif %}" href="{% url 'news:category' 'county' %}">County</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+                    <a class="nav-link {% if 'contact' in request.path %}active{% endif %}" href="">Contact</a>
                 </li>
             </ul>
         </div>

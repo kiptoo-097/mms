@@ -91,6 +91,29 @@ class SearchResultsView(ListView):
         )[:5]
         return context
 
+class TrendingArticlesView(ListView):
+    model = Article
+    template_name = 'news/trending.html'
+    context_object_name = 'articles'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Article.objects.filter(
+            status='published',
+            is_trending=True
+        ).order_by('-created_at')
+
+class LatestArticlesView(ListView):
+    model = Article
+    template_name = 'news/latest.html'
+    context_object_name = 'articles'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Article.objects.filter(
+            status='published'
+        ).order_by('-created_at')
+
 class AddCommentView(LoginRequiredMixin, CreateView):
     model = Comment
     template_name = 'news/add_comment.html'

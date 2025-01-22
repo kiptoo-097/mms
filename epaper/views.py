@@ -20,7 +20,8 @@ class EpaperDetailView(DetailView):
 
     def get_object(self):
         obj = super().get_object()
-        obj.increment_view_count()
+        obj.view_count += 1
+        obj.save()
         return obj
 
 def epaper_download(request, slug):

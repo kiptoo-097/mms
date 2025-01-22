@@ -42,7 +42,7 @@
                                 </div>
                                 <p class="mb-1">{{ comment.content }}</p>
                                 <small>
-                                    <a href="{% url 'article_detail' comment.article.slug %}">View Article</a>
+                                    <a href="{% url 'news:article_detail' comment.article.slug %}">View Article</a>
                                 </small>
                             </div>
                         {% empty %}
