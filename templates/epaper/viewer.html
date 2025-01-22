@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ paper.title }} - E-Paper Viewer{% endblock %}
+
+{% block extra_head %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf_viewer.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div id="pdfViewer" class="pdf-container">
+                        <canvas id="pdfCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4>{{ paper.title }}</h4>
+                    <p class="text-muted">
+                        <i class="fas fa-calendar"></i> {{ paper.publication_date|date:"F d, Y" }}
+                    </p>
+                    <div class="d-grid gap-2">
+                        <button id="prevPage" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button id="nextPage" class="btn btn-secondary">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <div class="text-center mt-2">
+                            Page <span id="currentPage">1</span> of <span id="totalPages">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+    
+    const url = '{{ paper.pdf_file.url }}';
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    const canvas = document.getElementById('pdfCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function renderPage(num) {
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+            const viewport = page.getViewport({scale: 1.5});
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            
+            page.render(renderContext).promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+            
+            document.getElementById('currentPage').textContent = num;
+        });
+    }
+
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+        pdfDoc = pdfDoc_;
+        document.getElementById('totalPages').textContent = pdfDoc.numPages;
+        renderPage(pageNum);
+    });
+
+    document.getElementById('prevPage').addEventListener('click', function() {
+        if (pageNum <= 1) return;
+        pageNum--;
+        renderPage(pageNum);
+    });
+
+    document.getElementById('nextPage').addEventListener('click', function() {
+        if (pageNum >= pdfDoc.numPages) return;
+        pageNum++;
+        renderPage(pageNum);
+    });
+</script>
+{% endblock %}

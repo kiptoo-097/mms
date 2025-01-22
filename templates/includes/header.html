@@ -1,0 +1,21 @@
+<header class="site-header py-2">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="Mestowot Media" class="img-fluid" style="max-height: 60px;">
+                </a>
+            </div>
+            <div class="col-lg-8">
+                <form action="{% url 'search' %}" method="GET" class="search-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search news...">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>

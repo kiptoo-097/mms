@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Results for "{{ query }}" - Mestowot Media{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="search-header mb-4">
+                <h2>Search Results for "{{ query }}"</h2>
+                <p class="text-muted">Found {{ articles.count }} results</p>
+            </div>
+
+            <!-- Search Results -->
+            {% if articles %}
+                {% for article in articles %}
+                    <div class="card mb-4">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ article.image.url }}" class="img-fluid rounded-start" alt="{{ article.title }}">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="badge bg-primary">{{ article.category.name }}</span>
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock"></i> {{ article.created_at|timesince }} ago
+                                        </small>
+                                    </div>
+                                    <h5 class="card-title mt-2">{{ article.title }}</h5>
+                                    <p class="card-text">{{ article.content|truncatewords:30|safe }}</p>
+                                    <a href="{% url 'article_detail' article.slug %}" class="btn btn-primary btn-sm">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <!-- Pagination -->
+                {% if articles.has_other_pages %}
+                    <nav aria-label="Search results pages">
+                        <ul class="pagination justify-content-center">
+                            {% if articles.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?q={{ query }}&page={{ articles.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in articles.paginator.page_range %}
+                                <li class="page-item {% if articles.number == num %}active{% endif %}">
+                                    <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endfor %}
+
+                            {% if articles.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?q={{ query }}&page={{ articles.next_page_number }}">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No results found for "{{ query }}". Try different keywords.
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            {% include 'news/includes/trending_sidebar.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

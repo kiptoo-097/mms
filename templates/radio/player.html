@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Live Radio - Mestowot Media{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">
+                        <i class="fas fa-broadcast-tower"></i> Live Radio
+                    </h2>
+                    
+                    <!-- Radio Player -->
+                    <div class="radio-player mb-4">
+                        <audio id="radioPlayer" controls class="w-100">
+                            <source src="{{ radio_stream_url }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+
+                    <!-- Now Playing -->
+                    <div class="now-playing bg-light p-3 rounded mb-4">
+                        <h4 class="text-primary">Now Playing</h4>
+                        <h5 id="currentShow" class="mb-2">{{ current_show.title }}</h5>
+                        <p class="text-muted mb-0">
+                            <i class="fas fa-user"></i> {{ current_show.host }}
+                            <span class="mx-2">|</span>
+                            <i class="fas fa-clock"></i> {{ current_time|time:"H:i" }}
+                        </p>
+                    </div>
+
+                    <!-- Program Schedule -->
+                    <div class="schedule">
+                        <h4 class="mb-3">Today's Schedule</h4>
+                        <div class="list-group text-start">
+                            {% for program in daily_schedule %}
+                            <div class="list-group-item {% if program.is_current %}active{% endif %}">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">{{ program.title }}</h6>
+                                        <small>{{ program.host }}</small>
+                                    </div>
+                                    <span class="badge bg-secondary">{{ program.time_slot }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Social Share -->
+                    <div class="share-buttons mt-4">
+                        <h5>Share Our Radio</h5>
+                        <div class="social-links">
+                            <a href="#" class="btn btn-outline-primary mx-1">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-info mx-1">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-success mx-1">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
