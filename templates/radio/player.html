@@ -1,68 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Live Radio - Mestowot Media{% endblock %}
-
 {% block content %}
 <div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow">
+        <div class="col-md-6">
+            <div class="card">
                 <div class="card-body text-center">
-                    <h2 class="card-title mb-4">
-                        <i class="fas fa-broadcast-tower"></i> Live Radio
-                    </h2>
-                    
-                    <!-- Radio Player -->
-                    <div class="radio-player mb-4">
-                        <audio id="radioPlayer" controls class="w-100">
-                            <source src="{{ radio_stream_url }}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
+                    <img src="{% static 'images/radio.png' %}" alt="Radio Logo" class="img-fluid mb-3" style="max-width: 120px;">
 
-                    <!-- Now Playing -->
-                    <div class="now-playing bg-light p-3 rounded mb-4">
-                        <h4 class="text-primary">Now Playing</h4>
-                        <h5 id="currentShow" class="mb-2">{{ current_show.title }}</h5>
-                        <p class="text-muted mb-0">
-                            <i class="fas fa-user"></i> {{ current_show.host }}
-                            <span class="mx-2">|</span>
-                            <i class="fas fa-clock"></i> {{ current_time|time:"H:i" }}
-                        </p>
-                    </div>
+                    <audio id="radioPlayer">
+                        <source src="https://stream.zeno.fm/8g0oai1gnz6tv" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
 
-                    <!-- Program Schedule -->
-                    <div class="schedule">
-                        <h4 class="mb-3">Today's Schedule</h4>
-                        <div class="list-group text-start">
-                            {% for program in daily_schedule %}
-                            <div class="list-group-item {% if program.is_current %}active{% endif %}">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">{{ program.title }}</h6>
-                                        <small>{{ program.host }}</small>
-                                    </div>
-                                    <span class="badge bg-secondary">{{ program.time_slot }}</span>
-                                </div>
+                    <div class="audio-player">
+                        <div class="controls">
+                            <button class="play-pause-btn btn btn-primary rounded-circle" onclick="togglePlay()">
+                                <i class="fas fa-play fa-sm" id="playIcon"></i>
+                            </button>
+                            
+                            <div class="volume-control">
+                                <i class="fas fa-volume-up fa-sm" id="volumeIcon"></i>
+                                <input type="range" class="volume-slider" min="0" max="100" value="100" onchange="updateVolume(this.value)">
                             </div>
-                            {% endfor %}
                         </div>
-                    </div>
 
-                    <!-- Social Share -->
-                    <div class="share-buttons mt-4">
-                        <h5>Share Our Radio</h5>
-                        <div class="social-links">
-                            <a href="#" class="btn btn-outline-primary mx-1">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a href="#" class="btn btn-outline-info mx-1">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="#" class="btn btn-outline-success mx-1">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
+                        <div class="mt-2">
+                            <p class="mb-0">Liteito Radio - Live Stream</p>
                         </div>
                     </div>
                 </div>
@@ -70,4 +35,88 @@
         </div>
     </div>
 </div>
+
+<style>
+.audio-player {
+    padding: 10px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.play-pause-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.volume-slider {
+    width: 70px;
+}
+</style>
+
+<script>
+const player = document.getElementById('radioPlayer');
+const playIcon = document.getElementById('playIcon');
+const volumeIcon = document.getElementById('volumeIcon');
+let isPlaying = false;
+
+function togglePlay() {
+    if (isPlaying) {
+        player.pause();
+        playIcon.classList.remove('fa-pause');
+        playIcon.classList.add('fa-play');
+    } else {
+        player.play().catch(error => {
+            console.log("Play failed:", error);
+        });
+        playIcon.classList.remove('fa-play');
+        playIcon.classList.add('fa-pause');
+    }
+    isPlaying = !isPlaying;
+}
+
+function updateVolume(value) {
+    const volume = value / 100;
+    player.volume = volume;
+    
+    volumeIcon.className = 'fas fa-sm';
+    if (volume === 0) {
+        volumeIcon.classList.add('fa-volume-mute');
+    } else if (volume < 0.5) {
+        volumeIcon.classList.add('fa-volume-down');
+    } else {
+        volumeIcon.classList.add('fa-volume-up');
+    }
+}
+
+player.addEventListener('error', function(e) {
+    console.error('Error:', e);
+    alert('Error loading stream. Please try again later.');
+});
+
+player.addEventListener('playing', function() {
+    playIcon.classList.remove('fa-play');
+    playIcon.classList.add('fa-pause');
+    isPlaying = true;
+});
+
+player.addEventListener('pause', function() {
+    playIcon.classList.remove('fa-pause');
+    playIcon.classList.add('fa-play');
+    isPlaying = false;
+});
+</script>
 {% endblock %}
