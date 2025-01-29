@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Article, Comment
+from .models import Category, Article, Comment, Epaper
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -21,3 +21,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ['user', 'article', 'created_at']
     list_filter = ['created_at']
     search_fields = ['content', 'user__username']
+
+@admin.register(Epaper)
+class EpaperAdmin(admin.ModelAdmin):
+    list_display = ['title', 'date_uploaded']
+    search_fields = ['title']

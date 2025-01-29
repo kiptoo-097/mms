@@ -1,29 +1,49 @@
-<footer class="site-footer bg-dark text-light py-4 mt-5">
+<footer class="site-footer bg-dark text-light py-5 mt-5">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <h5>About Us</h5>
-                <p>Mestowoot Media Services- Your trusted source for news.</p>
+        <div class="row text-center text-md-start">
+            <!-- Contact Info -->
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold">Contact Info</h5>
+                <p><i class="fas fa-envelope me-2"></i> 
+                    <a href="mailto:Mestowootmediaservices@gmail.com" class="text-light text-decoration-none">Mestowootmediaservices@gmail.com</a>
+                </p>
+                <p><i class="fas fa-phone me-2"></i> 
+                    <a href="tel:+254114295144" class="text-light text-decoration-none">0114295144</a>
+                </p>
             </div>
-            <div class="col-md-4">
-                <h5>Quick Links</h5>
+
+            <!-- Quick Links -->
+            <div class="col-md-4 mb-4">
+                <h5 class="fw-bold">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li><a href="{% url 'news:home' %}" class="text-light">Home</a></li>
-                    <li><a href="{% url 'about' %}" class="text-light">About</a></li>
-                    <li><a href="{% url 'contact' %}" class="text-light">Contact</a></li>
+                    <li><a href="{% url 'news:home' %}" class="text-light text-decoration-none">🏠 Home</a></li>
+                    <li><a href="{% url 'news:about' %}" class="text-light text-decoration-none">ℹ About</a></li>
                 </ul>
             </div>
+
+            <!-- Connect With Us -->
             <div class="col-md-4">
-                <h5>Contact Info</h5>
-                <address>
-                    <p><i class="fas fa-phone"></i> +254 123 456 789</p>
-                    <p><i class="fas fa-envelope"></i> info@mestowotnews.com</p>
-                </address>
+                <h5 class="fw-bold">Connect With Us</h5>
+                <div class="d-flex justify-content-md-start justify-content-center">
+                    <a href="https://www.facebook.com/share/1De1NGyJ8T/" class="social-icon me-3" target="_blank">
+                        <i class="fab fa-facebook fa-lg"></i>
+                    </a>
+                    <a href="https://www.instagram.com" class="social-icon me-3" target="_blank">
+                        <i class="fab fa-instagram fa-lg"></i>
+                    </a>
+                    <a href="https://x.com/liteitoradio" class="social-icon me-3" target="_blank">
+                        <i class="fab fa-x-twitter fa-lg"></i>
+                    </a>  
+                    <a href="https://youtube.com/@mestowootmediaservices?si=1Ps2IOQ4bVtrf4Pw" class="social-icon" target="_blank">
+                        <i class="fab fa-youtube fa-lg"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <hr>
+
+        <hr class="border-light">
         <div class="text-center">
-            <p>&copy; {% now "Y" %} Mestowoot Media Services. All rights reserved.</p>
+            <p class="mb-0">&copy; {% now "Y" %} Mestowoot Media Services. All rights reserved.</p>
         </div>
     </div>
 </footer>

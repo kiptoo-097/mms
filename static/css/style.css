@@ -78,3 +78,40 @@ body {
         margin-bottom: 1.5rem;
     }
 }
+
+/* footer */
+
+.site-footer {
+    background: #222;
+    color: #fff;
+    font-size: 16px;
+}
+
+.site-footer h5 {
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.site-footer a {
+    color: #bbb;
+    transition: color 0.3s ease-in-out;
+}
+
+.site-footer a:hover {
+    color: #fff;
+}
+
+.social-icon {
+    color: #bbb;
+    font-size: 24px;
+    transition: color 0.3s ease-in-out, transform 0.3s;
+}
+
+.social-icon:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+hr {
+    opacity: 0.2;
+}

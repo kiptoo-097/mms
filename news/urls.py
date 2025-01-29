@@ -20,4 +20,9 @@ urlpatterns = [
     
     # Search
     path('search/', views.SearchResultsView.as_view(), name='search'),
+    
+    path('about/', views.about, name='about'),
+    
+    path('epapers/', views.epaper_list_view, name='epaper_list'),
+    path('epaper/<int:pk>/', views.epaper_detail_view, name='epaper_detail'),
 ]

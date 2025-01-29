@@ -4,11 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mestowoot Media - {% block title %}{% endblock %}</title>
+    <title>Mestowoot Media Services- {% block title %}{% endblock %}</title>
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/logo.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/logo.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/logo.png' %}">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Mestowoot Media Services">
+    <meta property="og:description" content="Mestowoot Media Services provides innovative, results-driven media solutions to elevate your presence.">
+    <meta property="og:image" content="{% static 'images/logo.png' %}">
+    <meta property="og:url" content="http://www.mestowootmediaservices.com">
+    <meta name="twitter:card" content="summary_large_image">
+    
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
@@ -34,7 +50,7 @@
     </header>
 
     <!-- Navigation -->
-    {% include 'navbar.html' %}
+    {% include 'includes/navbar.html' %}
 
     <!-- Main Content -->
     <main class="py-4">
@@ -51,37 +67,7 @@
 
         {% block content %}{% endblock %}
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>About Us</h5>
-                    <p>Mestowoot Media - Your trusted source for news and information.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'news:home' %}" class="text-light">Home</a></li>
-                        <li><a href="{% url 'radio:player' %}" class="text-light">Live Radio</a></li>
-                        <li><a href="{% url 'epaper:list' %}" class="text-light">E-Paper</a></li>
-                        <li><a href="" class="text-light">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Connect With Us</h5>
-                    <div class="social-links">
-                        <a href="#" class="text-light me-3"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-light"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4">
-            <p class="text-center mb-0">&copy; {% now "Y" %} Mestowoot Media. All rights reserved.</p>
-        </div>
-    </footer>
+    {% include 'includes/footer.html' %}
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

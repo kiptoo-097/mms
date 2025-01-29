@@ -2,7 +2,9 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from .models import Article, Category, Comment
+from .models import Article, Category, Comment, Epaper
+from django.core.paginator import Paginator
+
 
 class HomeView(ListView):
     model = Article
@@ -131,3 +133,19 @@ class AddCommentView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('news:article_detail', kwargs={'slug': self.object.article.slug})
+    
+from django.shortcuts import render
+
+def about(request):
+    return render(request, 'news/about.html')
+def epaper_list_view(request):
+    epapers = Epaper.objects.all().order_by('-date_uploaded')
+    paginator = Paginator(epapers, 6)  # Show 6 epapers per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'epaper/epaper_list.html', {'page_obj': page_obj})
+
+def epaper_detail_view(request, pk):
+    epaper = get_object_or_404(Epaper, pk=pk)
+    return render(request, 'epaper/epaper_detail.html', {'epaper': epaper})

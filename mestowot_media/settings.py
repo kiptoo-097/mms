@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'news.apps.NewsConfig',
     'radio.apps.RadioConfig',
-    'epaper.apps.EpaperConfig',
 ]
 
 MIDDLEWARE = [

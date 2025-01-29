@@ -52,3 +52,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.article.title}'
+    
+class Epaper(models.Model):
+    title = models.CharField(max_length=200)
+    pdf = models.FileField(upload_to='epapers/')
+    date_uploaded = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
