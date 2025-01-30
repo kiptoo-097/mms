@@ -4,50 +4,153 @@
 {% block title %}Home - Mestowoot Media{% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- Featured Articles -->
-    <section class="featured-section mb-4">
-        <h2>Latest News</h2>
-        <div class="row">
-            {% for article in featured_articles %}
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+{% block extra_css %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+<div class="container-fluid px-4 py-6">
+    <!-- Live Radio Player -->
+    <div class="mb-6 d-flex justify-content-center align-items-center bg-dark p-4 rounded-lg">
+        <audio id="liveRadio" src="https://stream.zeno.fm/8g0oai1gnz6tv" preload="none"></audio>
+        <button id="radioToggle" class="btn btn-danger text-white px-4 py-2 rounded-lg shadow-lg hover:bg-danger transition">
+            ▶ Play Live Radio
+        </button>
+    </div>
+
+    <div class="row g-3">
+        <!-- Latest News Carousel -->
+        <div class="col-md-4">
+            <h2 class="text-center text-2xl font-bold text-dark mb-4">Latest News</h2>
+            <div id="latestCarousel" class="carousel slide rounded-lg shadow-lg overflow-hidden" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for article in latest_articles|slice:":4" %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <h5 class="text-dark text-lg font-bold p-4">{{ article.title }}</h5>
+                        <p class="text-muted text-sm p-4">{{ article.content|truncatewords:15 }}</p>
+                        <img class="d-block w-100" src="{{ article.image.url }}" alt="{{ article.title }}">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-4">
+                            <a href="{% url 'news:article_detail' article.slug %}" class="text-light text-sm">Read More</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#latestCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#latestCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Larger Trending News Carousel (Centered) -->
+        <div class="col-md-8">
+            <h2 class="text-center text-3xl font-bold text-danger mb-4">Trending</h2>
+            <div id="trendingCarousel" class="carousel slide rounded-lg shadow-lg overflow-hidden" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for article in trending_articles|slice:":4" %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <h4 class="text-dark text-lg font-bold p-4">{{ article.title }}</h4>
+                        <p class="text-muted text-sm p-4">{{ article.content|truncatewords:15 }}</p>
+                        <img class="d-block w-100" src="{{ article.image.url }}" alt="{{ article.title }}">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-6">
+                            <a href="{% url 'news:article_detail' article.slug %}" class="text-danger text-sm">Read More</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#trendingCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#trendingCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="mt-4">
+        <h2 class="text-center text-2xl font-bold text-dark mb-4">Categories</h2>
+        <div class="row g-3">
+            {% for category, latest_article in categories_with_latest_articles %}
+            <div class="col-md-4">
+                <div class="card bg-light shadow-lg rounded-lg overflow-hidden d-flex align-items-center p-4">
+                    <img src="{{ latest_article.image.url }}" class="card-img-top rounded-lg object-cover" alt="{{ latest_article.title }}">
                     <div class="card-body">
-                        <span class="badge bg-primary">{{ article.category.name }}</span>
-                        <h5 class="card-title">{{ article.title }}</h5>
-                        <p class="card-text">{{ article.content|truncatewords:20 }}</p>
-                        <small class="text-muted">
-                            {{ article.created_at|date:"F d, Y" }}
-                        </small>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ category.name }}</h6>
+                        <p class="card-title text-dark font-weight-bold">{{ latest_article.title }}</p>
+                        <a href="{% url 'news:category' category.slug %}" class="card-link text-primary">Show More</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-    </section>
+    </div>
 
-    <!-- Category Sections -->
-    <section class="category-sections">
-        {% for category in categories %}
-        <div class="category-section mb-4">
-            <h3>{{ category.name }}</h3>
-            <div class="row">
-                {% for article in category.article_set.all|slice:":3" %}
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ article.title }}</h5>
-                            <p class="card-text">{{ article.content|truncatewords:15 }}</p>
-                            <a href="{% url 'news:article_detail' article.slug %}" class="btn btn-primary">Read More</a>
-                        </div>
+    <!-- More Articles Section -->
+    <section class="mt-4">
+        <h2 class="text-2xl font-bold text-dark mb-4">More Articles</h2>
+        <div class="row g-3">
+            {% for article in articles %}
+            <div class="col-md-3">
+                <div class="card bg-light shadow-lg rounded-lg overflow-hidden hover-shadow transition">
+                    <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark font-weight-bold">{{ article.title }}</h5>
+                        <p class="card-text text-muted">{{ article.content|truncatewords:15 }}</p>
+                        <a href="{% url 'news:article_detail' article.slug %}" class="card-link text-primary">Read More</a>
                     </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            {% if is_paginated %}
+            <nav class="inline-flex space-x-2">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-secondary text-light rounded-lg">❮ Prev</a>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                <a href="?page={{ num }}" class="px-4 py-2 {% if page_obj.number == num %}bg-primary text-light{% else %}bg-secondary text-light{% endif %} rounded-lg">{{ num }}</a>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-secondary text-light rounded-lg">Next ❯</a>
+                {% endif %}
+            </nav>
+            {% endif %}
+        </div>
     </section>
 </div>
+
+<!-- JavaScript for Live Radio -->
+<script>
+    document.getElementById("radioToggle").addEventListener("click", function() {
+        var radio = document.getElementById("liveRadio");
+        if (radio.paused) {
+            radio.play();
+            this.innerText = "⏸ Pause Live Radio";
+        } else {
+            radio.pause();
+            this.innerText = "▶ Play Live Radio";
+        }
+    });
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Bootstrap carousel
+        var latestCarousel = new bootstrap.Carousel(document.getElementById('latestCarousel'));
+        var trendingCarousel = new bootstrap.Carousel(document.getElementById('trendingCarousel'));
+    });
+</script>
+
 {% endblock %}

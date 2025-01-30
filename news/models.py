@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from accounts.models import CustomUser
-from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -21,7 +20,7 @@ class Article(models.Model):
     
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
-    content = RichTextField()
+    content = models.TextField()  # Changed from RichTextField to TextField
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='news/')

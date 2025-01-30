@@ -2,15 +2,15 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from .models import Article, Category, Comment, Epaper
 from django.core.paginator import Paginator
-
+from .models import Article, Category, Comment, Epaper
+from django.urls import reverse
 
 class HomeView(ListView):
     model = Article
     template_name = 'news/index.html'
     context_object_name = 'articles'
-    paginate_by = 12
+    paginate_by = 8  # Display 8 articles per page
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -18,14 +18,23 @@ class HomeView(ListView):
             status='published'
         ).order_by('-created_at')[:3]
         context['trending_articles'] = Article.objects.filter(
-            status='published', 
+            status='published',
             is_trending=True
         )[:5]
         context['latest_articles'] = Article.objects.filter(
             status='published'
         ).order_by('-created_at')[:6]
-        context['categories'] = Category.objects.all()
+
+        # Fetch all categories and their latest articles
+        categories_with_latest_articles = []
+        for category in Category.objects.all():
+            latest_article = category.article_set.filter(status='published').order_by('-created_at').first()
+            if latest_article:
+                categories_with_latest_articles.append((category, latest_article))
+        context['categories_with_latest_articles'] = categories_with_latest_articles
+
         return context
+
 
 class CategoryView(ListView):
     model = Article
@@ -36,7 +45,7 @@ class CategoryView(ListView):
     def get_queryset(self):
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
         return Article.objects.filter(
-            category=self.category, 
+            category=self.category,
             status='published'
         ).order_by('-created_at')
 
@@ -44,7 +53,7 @@ class CategoryView(ListView):
         context = super().get_context_data(**kwargs)
         context['category'] = self.category
         context['trending_articles'] = Article.objects.filter(
-            status='published', 
+            status='published',
             is_trending=True
         )[:5]
         return context
@@ -88,7 +97,7 @@ class SearchResultsView(ListView):
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET.get('q', '')
         context['trending_articles'] = Article.objects.filter(
-            status='published', 
+            status='published',
             is_trending=True
         )[:5]
         return context
@@ -115,10 +124,6 @@ class LatestArticlesView(ListView):
         return Article.objects.filter(
             status='published'
         ).order_by('-created_at')
-        
-        
-from django.urls import reverse
-
 
 class AddCommentView(LoginRequiredMixin, CreateView):
     model = Comment
@@ -133,11 +138,12 @@ class AddCommentView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('news:article_detail', kwargs={'slug': self.object.article.slug})
-    
+
 from django.shortcuts import render
 
 def about(request):
     return render(request, 'news/about.html')
+
 def epaper_list_view(request):
     epapers = Epaper.objects.all().order_by('-date_uploaded')
     paginator = Paginator(epapers, 6)  # Show 6 epapers per page
