@@ -10,12 +10,26 @@
         <header class="article-header mb-4">
             <h1 class="article-title">{{ article.title }}</h1>
             <div class="article-meta">
-                <span class="badge bg-primary">{{ article.category.name }}</span>
+                <span class="badge 
+                    {% if article.category.name == 'Church' %} bg-primary 
+                    {% elif article.category.name == 'Politics' %} bg-danger 
+                    {% elif article.category.name == 'Kalenjin News' %} bg-success 
+                    {% elif article.category.name == 'Opinion' %} bg-warning text-dark 
+                    {% elif article.category.name == 'National' %} bg-info 
+                    {% elif article.category.name == 'County' %} bg-secondary 
+                    {% else %} bg-dark 
+                    {% endif %}">
+                    {{ article.category.name }}
+                </span>
+
                 <span class="text-muted ms-3">
                     <i class="fas fa-user"></i> {{ article.author.name }}
                 </span>
                 <span class="text-muted ms-3">
                     <i class="fas fa-clock"></i> {{ article.created_at|date:"F d, Y" }}
+                </span>
+                <span class="text-muted ms-3">
+                    <i class="fas fa-eye"></i> {{ article.view_count }} views
                 </span>
             </div>
         </header>

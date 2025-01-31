@@ -1,4 +1,6 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
         <!-- Logo brand -->
@@ -45,7 +47,18 @@
             </ul>
         </div>
     </div>
+    
 </nav>
+<div class="">
+    <!-- News Ticker -->
+    <div class="news-ticker text-white p-2 mb-4 shadow-lg">
+        <div class="news-container">
+            {% for article in latest_articles|slice:":10" %}
+            <a href="{% url 'news:article_detail' article.slug %}" class="news-item">🔴 {{ article.title }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 <style>
     @media (max-width: 991.98px) {

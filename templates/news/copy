@@ -1,0 +1,45 @@
+latest news
+
+<div class="col-md-4">
+    <div class="news-section">
+        <!-- Latest News -->
+        <h2 class="text-center section-title text-danger">Latest News</h2>
+        <div class="list-group">
+            {% for article in latest_articles|slice:":4" %}
+            <a href="{% url 'news:article_detail' article.slug %}" class="news-card list-group-item list-group-item-action d-flex align-items-center p-3 rounded shadow-sm">
+                <!-- News Image -->
+                <div class="flex-shrink-0">
+                    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="news-img rounded">
+                </div>
+                <!-- News Title -->
+                <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-1 text-dark">{{ article.title }}</h6>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+  
+    
+</div>
+
+.news-card {
+    display: flex;
+    align-items: center;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    border-radius: 10px;
+    background: white;
+}
+
+.news-card:hover {
+    background: #f8f9fa; /* Light gray hover effect */
+    transform: translateY(-2px);
+}
+
+.news-img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
